@@ -3,8 +3,10 @@ from textwrap import dedent, indent
 
 import clize
 
-from sublesee.parse import read_srt, write_xslx, \
+from sublesee.io import (
+    read_srt, write_xslx,
     read_xlsx, write_srt
+)
 
 DEFAULT_HTML_PATH = "{srt}.html"
 DEFAULT_XLSX_PATH = "{srt}.xlsx"

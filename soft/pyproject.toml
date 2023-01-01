@@ -43,8 +43,8 @@ dependencies = [
 test = ["pytest"]
 
 [project.urls]
-"Homepage" = "TODO"
-"Bug Tracker" = "TODO"
+"Homepage" = "https://github.com/egslava/sublesee"
+"Bug Tracker" = "https://github.com/egslava/sublesee/issues"
 
 [project.scripts]
 sublesee = "sublesee.scripts:run"

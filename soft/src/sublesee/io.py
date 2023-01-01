@@ -37,7 +37,13 @@ def read_srt(path):
             TEXT,
         ]
     )
-    df.dtype = np.bool_, int, str, str, str
+    df = df.astype({
+        DO_YOU_KNOW: np.bool_,
+        IDX: int,
+        TIME: str,
+        TEXT_WITHOUT_TAGS: str,
+        TEXT: str,
+    })
     return df
 
 

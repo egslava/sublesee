@@ -1,5 +1,5 @@
 soft_path=..
-package_name='pymedm'
+package_name='sublesee'
 src_path=$soft_path/src
 
 
