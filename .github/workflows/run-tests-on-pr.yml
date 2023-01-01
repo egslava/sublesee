@@ -1,0 +1,53 @@
+name: "run-tests-on-pr"
+
+on:
+  pull_request
+
+jobs:
+  run-tests:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        python_version:
+          - '3.8'
+          - '3.9'
+          - '3.10'
+
+    name: "Run tests"
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python_version }}
+
+      - name: "run-tests"
+        env:
+          MEDM_EMAIL: ${{ secrets.MEDM_EMAIL }}
+          MEDM_PASSW: ${{ secrets.MEDM_PASSW }}
+        run: |
+          # we dont' create venv, since in, in fact,
+          # using github actions we're already 
+          # using some virtual environment
+          cd ./soft
+          python3 -m pip install .[test]
+          
+          # not x or x is meaningful, since, by default
+          # not realrequest is used to run tests to 
+          # avoid spamming medm servers meanwhile, 
+          # just "realrequest" will run only 
+          # 'realrequest'
+          pytest --doctest-modules -m "not realrequest or realrequest"
+
+      - name: 'pip-check'
+        env:
+          USER: ${{ github.actor }}
+          TOKEN: ${{ github.token }}
+        run: |
+          echo ${{ env.USER }}
+          echo ${{ env.TOKEN }}
+          python3 -m pip install git+https://${{ env.USER }}:${{ env.TOKEN }}@github.com/egslava/pymedm.git@develop#subdirectory=soft

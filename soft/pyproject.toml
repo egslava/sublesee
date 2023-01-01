@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src"
+]
+markers = [
+    "realrequest: send real requests to Medm",
+]
+addopts = '--doctest-modules -m "not realrequest"'
+
+
+[project]
+name = "sublesee"
+version = "0.0.1"
+authors = [
+    { name = "Viacheslav Egorenkov", email = "egslava@gmail.com" },
+]
+description = """
+Sublesee: SUBtitles LEvel C. A python script for
+comfortable translating only SOME words in English
+subtitles.
+ """
+
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+
+dependencies = [
+    "pysrt",
+    "pandas",
+    "xlsxwriter",
+    "clize",
+    "numpy",
+]
+
+# for future references:
+# https://stackoverflow.com/a/69977707
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+"Homepage" = "TODO"
+"Bug Tracker" = "TODO"
+
+[project.scripts]
+sublesee = "sublesee.scripts:run"
