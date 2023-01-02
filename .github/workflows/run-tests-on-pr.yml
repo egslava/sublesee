@@ -47,4 +47,4 @@ jobs:
         run: |
           echo ${{ env.USER }}
           echo ${{ env.TOKEN }}
-          python3 -m pip install git+https://${{ env.USER }}:${{ env.TOKEN }}@github.com/egslava/sublesee.git@develop#subdirectory=soft
+          python3 -m pip install git+https://${{ env.USER }}:${{ env.TOKEN }}@github.com/egslava/sublesee.git@dev#subdirectory=soft
