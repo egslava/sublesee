@@ -83,18 +83,3 @@ def xlsx2srt(
 
 def run(*args, **kwargs):
     clize.run(srt2html, srt2xlsx, xlsx2srt)
-
-
-def some_func2():
-    print("SOME_FUNC2!")
-# print()
-# max([max(map(len, sub.text.split('\n'))) for sub in subs])
-# from clize import run
-#
-#
-# def tohtml(srt_in_path: str, html_out_path: str):
-#     pass
-#
-#
-# if __name__ == '__main__':
-#     run(dict(tohtml=tohtml))

@@ -1,5 +1,4 @@
 import sys
-import time
 
 import pysrt
 from pandas import DataFrame
@@ -95,9 +94,5 @@ def write_srt(filename: str, df: DataFrame):
 
 
 if __name__ == '__main__' or 'pytest' in sys.modules:
-    # Changing the timezone to +1
-    __import__('os').environ['TZ'] = "+01:00"
-    time.tzset()
     import doctest
-
     doctest.testmod()
