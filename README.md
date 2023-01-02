@@ -40,3 +40,5 @@ sublesee srt2xlsx path-to.srt
 ```bash
 sublesee xlsx2srt path-to.xlsx
 ```
+
+# [The full cycle](https://youtu.be/8lHKvfkSkQk)

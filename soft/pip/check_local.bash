@@ -37,7 +37,7 @@ _pkgs=venv/lib/python3.9/site-packages
 
 venv
 echo `pwd`
-pip install --no-cache-dir -U ../$soft_path[test]
+pip install --no-cache-dir -U "../$soft_path[test]"
 #echo $_pkgs/$package_name
 #ls $_pkgs/$package_name
 #echo $_pkgs

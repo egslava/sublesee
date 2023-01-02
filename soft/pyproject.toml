@@ -33,6 +33,7 @@ dependencies = [
     "pysrt",
     "pandas",
     "xlsxwriter",
+    "openpyxl",
     "clize",
     "numpy",
 ]
