@@ -8,7 +8,15 @@ sublesee xlsx2srt $DATA/1.Eng.srt.xlsx
 cmp --silent\
   $DATA/1.Eng.srt\
   $DATA/1.Eng.srt.xlsx.srt\
-  || { echo "xlsx2srt failed to restore the "\
-            "original srt file"; exit 1; }
+  || {
+    echo "xlsx2srt failed to restore the original srt file";
+    echo "The original file: "
+    cat $DATA/1.Eng.srt
+    echo "The restored file: "
+    cat $DATA/1.Eng.srt.xlsx.srt
+    echo "Difference: "
+    diff $DATA/1.Eng.srt $DATA/1.Eng.srt.xlsx.srt
+    exit 1;
+  }
 
 sublesee srt2html $DATA/1.Eng.srt
