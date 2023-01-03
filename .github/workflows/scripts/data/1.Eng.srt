@@ -1,0 +1,9 @@
+﻿1
+00:00:09,465 --> 00:00:12,502
+<i>I'm going down to South Park</i>
+<i>Gonna have myself a time</i>
+
+2
+00:00:12,585 --> 00:00:16,055
+<i>Friendly faces everywhere</i>
+<i>Humble folks without temptation</i>

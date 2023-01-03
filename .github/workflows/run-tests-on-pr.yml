@@ -32,19 +32,11 @@ jobs:
           # using some virtual environment
           cd ./soft
           python3 -m pip install .[test]
-          
-          # not x or x is meaningful, since, by default
-          # not realrequest is used to run tests to 
-          # avoid spamming medm servers meanwhile, 
-          # just "realrequest" will run only 
-          # 'realrequest'
-          pytest --doctest-modules -m "not realrequest or realrequest"
+          pytest --doctest-modules
 
       - name: 'pip-check'
         env:
           USER: ${{ github.actor }}
           TOKEN: ${{ github.token }}
         run: |
-          echo ${{ env.USER }}
-          echo ${{ env.TOKEN }}
-          python3 -m pip install git+https://${{ env.USER }}:${{ env.TOKEN }}@github.com/egslava/sublesee.git@dev#subdirectory=soft
+          bash scripts/test_dev.bash
