@@ -39,5 +39,6 @@ jobs:
           USER: ${{ github.actor }}
           TOKEN: ${{ github.token }}
         run: |
+          python3 -m pip install git+https://"$USER":"$TOKEN"@github.com/"$USER"/sublesee.git@dev#subdirectory=soft
           bash .github/workflows/scripts/test_branch_dev.sh
           

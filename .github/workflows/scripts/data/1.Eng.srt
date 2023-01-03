@@ -1,4 +1,4 @@
-﻿1
+1
 00:00:09,465 --> 00:00:12,502
 <i>I'm going down to South Park</i>
 <i>Gonna have myself a time</i>
