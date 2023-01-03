@@ -39,4 +39,4 @@ jobs:
           USER: ${{ github.actor }}
           TOKEN: ${{ github.token }}
         run: |
-          bash scripts/test_branch_dev.bash
+          bash ./github/workflows/scripts/test_branch_dev.bash
