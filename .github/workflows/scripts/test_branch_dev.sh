@@ -5,7 +5,7 @@ BASE=.github/workflows/scripts/
 DATA=$BASE/data
 sublesee srt2xlsx $DATA/1.Eng.srt
 sublesee xlsx2srt $DATA/1.Eng.srt.xlsx
-diff -ZbB \
+diff -ZbB -c \
   $DATA/1.Eng.srt \
   $DATA/1.Eng.srt.xlsx.srt\
   || {
