@@ -5,8 +5,8 @@ BASE=.github/workflows/scripts/
 DATA=$BASE/data
 sublesee srt2xlsx $DATA/1.Eng.srt
 sublesee xlsx2srt $DATA/1.Eng.srt.xlsx
-diff -ZbB
-  $DATA/1.Eng.srt\
+diff -ZbB \
+  $DATA/1.Eng.srt \
   $DATA/1.Eng.srt.xlsx.srt\
   || {
     echo "xlsx2srt failed to restore the original srt"\
