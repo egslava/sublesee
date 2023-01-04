@@ -23,7 +23,7 @@ def test_write_srt():
     write_srt('tests/trans/1.Eng.srt.xlsx.srt', df)
 
 
-def test_integrational():
+def test_integration():
     import os
     try:
         write_xslx('tests/subs/1.Eng.xlsx',
@@ -31,9 +31,10 @@ def test_integrational():
 
         write_srt('tests/subs/1.Eng.srt.copy',
                   read_xlsx('tests/subs/1.Eng.xlsx'))
-        import filecmp
-        filecmp.cmp('tests/subs/1.Eng.srt',
-                    'tests/subs/1.Eng.srt.copy')
+        srt_before = pysrt.open('tests/subs/1.Eng.srt')
+        srt_after = pysrt.open(
+            'tests/subs/1.Eng.srt.copy')
+        assert srt_before == srt_after
     finally:
         os.remove('tests/subs/1.Eng.srt.copy')
 
