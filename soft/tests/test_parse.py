@@ -5,7 +5,9 @@ import pytest
 from unittest import TestCase
 from glob import glob
 
-from pandas import read_excel
+import os
+from tempfile import gettempdir, TemporaryFile, \
+    NamedTemporaryFile
 
 from sublesee.io import read_srt, write_xslx, \
     read_xlsx, write_srt
@@ -15,28 +17,26 @@ FILENAMES = glob('tests/subs/*')
 
 def test_read_srt():
     df = read_srt('tests/subs/1.Eng.srt')
-    write_xslx('tests/subs/1.Eng.xlsx', df)
+    with TemporaryFile() as file:
+        write_xslx(file, df)
 
 
 def test_write_srt():
     df = read_xlsx('tests/trans/1.Eng.srt.xlsx')
-    write_srt('tests/trans/1.Eng.srt.xlsx.srt', df)
+    with NamedTemporaryFile() as file:
+        write_srt(file.name, df)
 
 
 def test_integration():
-    import os
-    try:
-        write_xslx('tests/subs/1.Eng.xlsx',
+    with NamedTemporaryFile() as xlsx, \
+            NamedTemporaryFile() as srt:
+        write_xslx(xlsx.name,
                    read_srt('tests/subs/1.Eng.srt'))
 
-        write_srt('tests/subs/1.Eng.srt.copy',
-                  read_xlsx('tests/subs/1.Eng.xlsx'))
+        write_srt(srt.name, read_xlsx(xlsx.name))
         srt_before = pysrt.open('tests/subs/1.Eng.srt')
-        srt_after = pysrt.open(
-            'tests/subs/1.Eng.srt.copy')
+        srt_after = pysrt.open(srt.name)
         assert srt_before == srt_after
-    finally:
-        os.remove('tests/subs/1.Eng.srt.copy')
 
 
 @pytest.mark.parametrize('filename', FILENAMES)
