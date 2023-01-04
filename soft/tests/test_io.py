@@ -44,11 +44,3 @@ def test_integration(tempdir: str):
         srt_before = pysrt.open('tests/subs/1.Eng.srt')
         srt_after = pysrt.open(srt_name)
         assert srt_before == srt_after
-
-
-@pytest.mark.parametrize('filename', FILENAMES)
-def test_csv_from_zip(filename):
-    # assert does not fail
-    with open(filename, 'rb') as file:
-        bytes = file.read()
-        # csv_from_zip(bytes)
