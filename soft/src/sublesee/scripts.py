@@ -54,7 +54,7 @@ def srt2html(
 def srt2xlsx(
         srt: str,
         xlsx=DEFAULT_XLSX_PATH,
-        break_lines=False,
+        break_lines=True,
 ):
     """
     :param srt: a path to input srt file
@@ -75,6 +75,11 @@ def srt2xlsx(
     version. Then I just decided to let the final
     user  decide how to use it and make the strategy
     as an opt argument.
+
+    I strongly recommend set 'break_lines' to True,
+    because it makes it easier to copy-paste to the
+    translator. If you want more context, then,
+    just, copy-paste it with the neighboring lines.
     """
     if xlsx == DEFAULT_XLSX_PATH:
         xlsx = f"{srt}.xlsx"
