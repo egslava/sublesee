@@ -84,7 +84,7 @@ def srt2xlsx(
     if xlsx == DEFAULT_XLSX_PATH:
         xlsx = f"{srt}.xlsx"
 
-    df = read_srt(srt)
+    df = read_srt(srt, break_lines)
     write_xslx(xlsx, df)
 
 

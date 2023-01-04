@@ -46,7 +46,8 @@ def test_integration(tempdir: str):
 
     with NamedTemporaryFile() as xlsx:
         write_xslx(xlsx,
-                   read_srt('tests/subs/1.Eng.srt'))
+                   read_srt('tests/subs/1.Eng.srt',
+                            break_lines=True))
 
         write_srt(srt_name, read_xlsx(xlsx))
         srt_before = pysrt.open('tests/subs/1.Eng.srt')
