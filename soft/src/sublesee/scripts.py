@@ -53,7 +53,8 @@ def srt2html(
 
 def srt2xlsx(
         srt: str,
-        xlsx=DEFAULT_XLSX_PATH
+        xlsx=DEFAULT_XLSX_PATH,
+        break_lines=False,
 ):
     """
     :param srt: a path to input srt file

@@ -1,7 +1,11 @@
+import dataclasses
 import sys
 
 import pysrt
 from pandas import DataFrame
+from dataclasses import dataclass
+
+from pysrt import SubRipItem
 
 DO_YOU_KNOW = 'You know?'
 IDX = 'idx'
@@ -10,21 +14,40 @@ TEXT_WITHOUT_TAGS = 'original'
 TEXT = 'output'
 
 
-def read_srt(path):
+def _sub_to_row(sub: SubRipItem, break_lines=False):
+    if break_lines:
+        texts, texts_without_tags = [
+            sub.text.split('\n'),
+            sub.text_without_tags.split('\n'),
+        ]
+    else:
+        texts, texts_without_tags = [
+            [sub.text],
+            [sub.text_without_tags],
+        ]
+
+    time = str(sub).split('\n')[1]
+    return [
+        (False,  # do you already know it?
+         sub.index, time, text_without_tags, text,)
+        for text, text_without_tags in
+        zip(
+            texts,
+            texts_without_tags,
+        )
+    ]
+
+
+def read_srt(path, break_lines: bool = False):
     import pysrt, pandas as pd, numpy as np
+
     subs = pysrt.open(path)
 
-    subs = list(
-        (
-            False,  # do you already know it?
-            sub.index,
-            str(sub).split('\n')[1],  # time
-            sub.text_without_tags.split('\n')[i_spl],
-            sub.text.split('\n')[i_spl],
-        )
+    subs = [
+        row
         for sub in subs
-        for i_spl, _ in enumerate(sub.text.split('\n'))
-    )
+        for row in _sub_to_row(sub, break_lines)
+    ]
 
     df = pd.DataFrame(
         subs,
@@ -95,4 +118,5 @@ def write_srt(filename: str, df: DataFrame):
 
 if __name__ == '__main__' or 'pytest' in sys.modules:
     import doctest
+
     doctest.testmod()

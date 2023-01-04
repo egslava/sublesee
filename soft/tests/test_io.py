@@ -1,16 +1,19 @@
-import pandas
 import pysrt
 import pytest
 
-from unittest import TestCase
 from glob import glob
 
 from os import path
-from tempfile import gettempdir, TemporaryFile, \
-    NamedTemporaryFile, TemporaryDirectory
+from tempfile import (
+    TemporaryFile,
+    NamedTemporaryFile,
+    TemporaryDirectory
+)
 
-from sublesee.io import read_srt, write_xslx, \
-    read_xlsx, write_srt
+from sublesee.io import (
+    read_srt, read_xlsx,
+    write_srt, write_xslx,
+)
 
 FILENAMES = glob('tests/subs/*')
 
@@ -19,11 +22,15 @@ FILENAMES = glob('tests/subs/*')
 def tempdir():
     with TemporaryDirectory() as dir:
         yield dir
-    pass
 
 
 def test_read_srt():
     df = read_srt('tests/subs/1.Eng.srt')
+    assert len(df) == 2
+
+    df = read_srt('tests/subs/1.Eng.srt',
+                  break_lines=True)
+    assert len(df) == 4
     with TemporaryFile() as outfile:
         write_xslx(outfile, df)
 
