@@ -7,8 +7,8 @@ from dataclasses import dataclass
 
 from pysrt import SubRipItem
 
-IS_EASY = 'Easy?\n(auto)'
-DO_YOU_KNOW = 'You\nknow?'
+AI_SKIP = 'Easy?\n(auto)'.lower()
+DO_YOU_KNOW = 'You\nknow?'.lower()
 IDX = 'idx'
 START = 'start'
 END = 'end'
@@ -52,7 +52,7 @@ def read_srt(path, break_lines: bool):
     df = pd.DataFrame(
         subs,
         columns=[
-            IS_EASY,
+            AI_SKIP,
             DO_YOU_KNOW,
             IDX,
             START,
@@ -62,7 +62,7 @@ def read_srt(path, break_lines: bool):
         ]
     )
     df = df.astype({
-        IS_EASY: np.bool_,
+        AI_SKIP: np.bool_,
         DO_YOU_KNOW: np.bool_,
         IDX: int,
         START: str,
