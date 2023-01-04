@@ -15,16 +15,11 @@ TEXT = 'output'
 
 
 def _sub_to_row(sub: SubRipItem, break_lines=False):
-    if break_lines:
-        texts, texts_without_tags = [
-            sub.text.split('\n'),
-            sub.text_without_tags.split('\n'),
-        ]
-    else:
-        texts, texts_without_tags = [
-            [sub.text],
-            [sub.text_without_tags],
-        ]
+    maxsplit = -1 if break_lines else 0
+    texts, texts_without_tags = [
+        sub.text.split('\n', maxsplit),
+        sub.text_without_tags.split('\n', maxsplit),
+    ]
 
     time = str(sub).split('\n')[1]
     return [
