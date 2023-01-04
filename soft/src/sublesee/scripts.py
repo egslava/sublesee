@@ -53,16 +53,38 @@ def srt2html(
 
 def srt2xlsx(
         srt: str,
-        xlsx=DEFAULT_XLSX_PATH
+        xlsx=DEFAULT_XLSX_PATH,
+        break_lines=True,
 ):
     """
     :param srt: a path to input srt file
     :param xlsx: a path to output xlsx
+    :param break_lines: see below
+
+    break_lines: This argument has a story.
+    When I started development, I imported srt this
+    way: each subtitle = one row in xlsx.
+
+    Then, I decided to change this behavior: one
+    subtitle LINE is one xlsx row. It's different
+    from previous options, when there're multiline
+    subtitles. Thus, each 'screen' can become 1 OR
+    more xlsx lines. But because the translator
+    couldn't really understand context by such a
+    line, I decided to get back to the previous
+    version. Then I just decided to let the final
+    user  decide how to use it and make the strategy
+    as an opt argument.
+
+    I strongly recommend set 'break_lines' to True,
+    because it makes it easier to copy-paste to the
+    translator. If you want more context, then,
+    just, copy-paste it with the neighboring lines.
     """
     if xlsx == DEFAULT_XLSX_PATH:
         xlsx = f"{srt}.xlsx"
 
-    df = read_srt(srt)
+    df = read_srt(srt, break_lines)
     write_xslx(xlsx, df)
 
 

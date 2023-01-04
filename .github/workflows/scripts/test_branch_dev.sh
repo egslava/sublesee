@@ -27,4 +27,4 @@ sublesee srt2html $DATA/1.Eng.srt $GENERATED/1.html
 on_exit
 
 cd soft
-pytest
+pytest -v

@@ -1,47 +1,74 @@
+import dataclasses
 import sys
 
 import pysrt
 from pandas import DataFrame
+from dataclasses import dataclass
 
-DO_YOU_KNOW = 'You know?'
+from pysrt import SubRipItem
+
+IS_EASY = 'Easy?\n(auto)'
+DO_YOU_KNOW = 'You\nknow?'
 IDX = 'idx'
-TIME = 'time'
+START = 'start'
+END = 'end'
 TEXT_WITHOUT_TAGS = 'original'
-TEXT = 'output'
+OUTPUT = 'output'
 
 
-def read_srt(path):
+def _sub_to_row(sub: SubRipItem, break_lines):
+    maxsplit = -1 if break_lines else 0
+    texts, texts_without_tags = [
+        sub.text.split('\n', maxsplit),
+        sub.text_without_tags.split('\n', maxsplit),
+    ]
+
+    time = str(sub).split('\n')[1]
+    # start, stop = time.split(' --> ')
+    # str(sub.start)
+    return [
+        (False, False,  # do you already know it?
+         sub.index, sub.start, sub.end,
+         text_without_tags, text,)
+        for text, text_without_tags in
+        zip(
+            texts,
+            texts_without_tags,
+        )
+    ]
+
+
+def read_srt(path, break_lines: bool):
     import pysrt, pandas as pd, numpy as np
+
     subs = pysrt.open(path)
 
-    subs = list(
-        (
-            False,  # do you already know it?
-            sub.index,
-            str(sub).split('\n')[1],  # time
-            sub.text_without_tags.split('\n')[i_spl],
-            sub.text.split('\n')[i_spl],
-        )
+    subs = [
+        row
         for sub in subs
-        for i_spl, _ in enumerate(sub.text.split('\n'))
-    )
+        for row in _sub_to_row(sub, break_lines)
+    ]
 
     df = pd.DataFrame(
         subs,
         columns=[
+            IS_EASY,
             DO_YOU_KNOW,
             IDX,
-            TIME,
+            START,
+            END,
             TEXT_WITHOUT_TAGS,
-            TEXT,
+            OUTPUT,
         ]
     )
     df = df.astype({
+        IS_EASY: np.bool_,
         DO_YOU_KNOW: np.bool_,
         IDX: int,
-        TIME: str,
+        START: str,
+        END: str,
         TEXT_WITHOUT_TAGS: str,
-        TEXT: str,
+        OUTPUT: str,
     })
     return df
 
@@ -62,8 +89,8 @@ def write_xslx(filename: str, df: DataFrame):
     sheet.autofilter(0, 0, h, w - 1)
 
     sheet.set_column(0, 0, 0)
-    sheet.set_column(1, 1, options={'hidden': True})
     sheet.set_column(2, 2, options={'hidden': True})
+    sheet.set_column(4, 4, options={'hidden': True})
     sheet.set_row(2, 100)
     writer.close()
 
@@ -71,11 +98,12 @@ def write_xslx(filename: str, df: DataFrame):
 def read_xlsx(filename: str):
     from pandas import read_excel
     df = read_excel(filename,
-                    usecols=['idx', 'time', 'output'])
+                    usecols=[IDX, START, END,
+                             OUTPUT])
     return (
-        df.groupby(by=['idx', 'time']).agg(
-            {'output': '\n'.join}
-        ).reset_index(level=['idx', 'time'])
+        df.groupby(by=[IDX, START, END]).agg(
+            {OUTPUT: '\n'.join}
+        ).reset_index(level=[IDX, START, END])
     )
 
 
@@ -85,7 +113,8 @@ def write_srt(filename: str, df: DataFrame):
         file.append(
             pysrt.SubRipItem(
                 row.idx,
-                *row.time.split(' --> '),
+                row.start,
+                row.end,
                 row.output
             )
         )
@@ -95,4 +124,5 @@ def write_srt(filename: str, df: DataFrame):
 
 if __name__ == '__main__' or 'pytest' in sys.modules:
     import doctest
+
     doctest.testmod()
