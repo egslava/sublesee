@@ -59,7 +59,9 @@ def srt2xlsx(
     """
     :param srt: a path to input srt file
     :param xlsx: a path to output xlsx
-    :param break_lines: This argument has a story.
+    :param break_lines: see below
+
+    break_lines: This argument has a story.
     When I started development, I imported srt this
     way: each subtitle = one row in xlsx.
 

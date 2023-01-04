@@ -25,7 +25,8 @@ def tempdir():
 
 
 def test_read_srt():
-    df = read_srt('tests/subs/1.Eng.srt')
+    df = read_srt('tests/subs/1.Eng.srt',
+                  break_lines=False)
     assert len(df) == 2
 
     df = read_srt('tests/subs/1.Eng.srt',
