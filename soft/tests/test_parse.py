@@ -5,7 +5,9 @@ import pytest
 from unittest import TestCase
 from glob import glob
 
-from pandas import read_excel
+from os import path
+from tempfile import gettempdir, TemporaryFile, \
+    NamedTemporaryFile, TemporaryDirectory
 
 from sublesee.io import read_srt, write_xslx, \
     read_xlsx, write_srt
@@ -13,29 +15,35 @@ from sublesee.io import read_srt, write_xslx, \
 FILENAMES = glob('tests/subs/*')
 
 
+@pytest.fixture()
+def tempdir():
+    with TemporaryDirectory() as dir:
+        yield dir
+    pass
+
+
 def test_read_srt():
     df = read_srt('tests/subs/1.Eng.srt')
-    write_xslx('tests/subs/1.Eng.xlsx', df)
+    with TemporaryFile() as outfile:
+        write_xslx(outfile, df)
 
 
-def test_write_srt():
+def test_write_srt(tempdir: str):
     df = read_xlsx('tests/trans/1.Eng.srt.xlsx')
-    write_srt('tests/trans/1.Eng.srt.xlsx.srt', df)
+    write_srt(path.join(tempdir, 'out.srt'), df)
 
 
-def test_integrational():
-    import os
-    try:
-        write_xslx('tests/subs/1.Eng.xlsx',
+def test_integration(tempdir: str):
+    srt_name = path.join(tempdir, 'out.srt')
+
+    with NamedTemporaryFile() as xlsx:
+        write_xslx(xlsx,
                    read_srt('tests/subs/1.Eng.srt'))
 
-        write_srt('tests/subs/1.Eng.srt.copy',
-                  read_xlsx('tests/subs/1.Eng.xlsx'))
-        import filecmp
-        filecmp.cmp('tests/subs/1.Eng.srt',
-                    'tests/subs/1.Eng.srt.copy')
-    finally:
-        os.remove('tests/subs/1.Eng.srt.copy')
+        write_srt(srt_name, read_xlsx(xlsx))
+        srt_before = pysrt.open('tests/subs/1.Eng.srt')
+        srt_after = pysrt.open(srt_name)
+        assert srt_before == srt_after
 
 
 @pytest.mark.parametrize('filename', FILENAMES)
