@@ -37,10 +37,10 @@ def test_integration(tempdir: str):
     srt_name = path.join(tempdir, 'out.srt')
 
     with NamedTemporaryFile() as xlsx:
-        write_xslx(xlsx.name,
+        write_xslx(xlsx,
                    read_srt('tests/subs/1.Eng.srt'))
 
-        write_srt(srt_name, read_xlsx(xlsx.name))
+        write_srt(srt_name, read_xlsx(xlsx))
         srt_before = pysrt.open('tests/subs/1.Eng.srt')
         srt_after = pysrt.open(srt_name)
         assert srt_before == srt_after
